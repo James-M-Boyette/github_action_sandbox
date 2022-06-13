@@ -42,9 +42,10 @@ jobs:
         # echo "GREETING=Whazzaaaap" >> $GITHUB_ENV
         steps:
         - name: Set DEV & GARS DB urls
-            if: ${{ github.event.inputs.environment == 'dev' }}
-            run: 
+          if: ${{ github.event.inputs.environment == 'dev' }}
+          run: 
             echo "DATABASE_URL=postgres://admin:${{ secrets.DB_PASSWORD }}@127.0.0.1:5432/agros_db_dev?schema=main" >> $GITHUB_ENV
+          run:
             echo "GARS_DATABASE_URL=postgres://postgres:${{ secrets.DB_GARS_PASSWORD }}@127.0.0.1:5431/agros_gars_dev" >> $GITHUB_ENV
 
     read_envs_job:
