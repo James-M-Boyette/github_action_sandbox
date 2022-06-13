@@ -41,8 +41,8 @@ jobs:
     # Q: How does this "if...else...fi" syntax work?
     greeting_job:
         runs-on: ubuntu-latest
-        env:
-            # Greeting: Hello # ENV - available to all STEPS of THIS job
+        # env:
+        # Greeting: Hello # ENV - available to all STEPS of THIS job
         steps:
             - name: "Change Global ENV"
               run: echo "DAY_OF_WEEK=Wednesday" >> $GITHUB_ENV
