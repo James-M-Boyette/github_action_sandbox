@@ -49,7 +49,7 @@ jobs:
             - name: "Set Global ENV"
               run: echo "GREETING=Whazzaaaap" >> $GITHUB_ENV
             - name: "Read ENVs"
-              run: echo "DAY_OF_WEEK = $DAY_OF_WEEK"
+              run: echo "DAY_OF_WEEK = $DAY_OF_WEEK, GREETING = $GREETING"
 
     # double_check:
     # needs: greeting_job
