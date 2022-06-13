@@ -52,7 +52,7 @@ jobs:
 
     read_envs_job:
         runs-on: ubuntu-latest
-        needs: [set_dev_envs_job]
+        needs: set_dev_envs_job
         # env:
         # Greeting: Hello # ENV - available to all STEPS of THIS job
         steps:
