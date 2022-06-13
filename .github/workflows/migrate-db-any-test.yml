@@ -34,21 +34,74 @@ env:
     REGION: us-central1 # Used in 'Connect to AWS'
 
 jobs:
-    set_dev_envs_job:
+    migrate:
         # !! Set environment-specific ENV variables for DEV !!
-        name: Set ENVs for 'migrate' job
+        name: Migrate DB
         runs-on: ubuntu-latest
         # echo "GREETING=Whazzaaaap" >> $GITHUB_ENV
         steps:
-            - name: Set DEV & GARS DB urls
+            # Set DEV Environment
+            - name: Set DEV DB url
               if: ${{ github.event.inputs.environment == 'dev' }}
               env:
                   Db_Url: postgres://admin:${{ secrets.DB_PASSWORD }}@127.0.0.1:5432/agros_db_dev?schema=main
+              run: echo "DATABASE_URL=$Db_Url" >> $GITHUB_ENV
+
+            - name: Set DEV GARS DB url
+              if: ${{ github.event.inputs.environment == 'dev' }}
+              env:
                   Gars_Url: postgres://postgres:${{ secrets.DB_GARS_PASSWORD }}@127.0.0.1:5431/agros_gars_dev
-              run: echo "DATABASE_URL=$Db_Url, GARS_DATABASE_URL=$Gars_Url" >> $GITHUB_ENV
+              run: echo "GARS_DATABASE_URL=$Gars_Url" >> $GITHUB_ENV
+
+            # Set UAT Environment
+            - name: Set UAT DB url
+              if: ${{ github.event.inputs.environment == 'uat' }}
+              env:
+                  Db_Url: postgres://admin:${{ secrets.DB_PASSWORD }}@127.0.0.1:5432/agros_db_uat?schema=main
+              run: echo "DATABASE_URL=$Db_Url" >> $GITHUB_ENV
+
+            - name: Set UAT GARS DB url
+              if: ${{ github.event.inputs.environment == 'uat' }}
+              env:
+                  Gars_Url: postgres://postgres:${{ secrets.DB_GARS_PASSWORD }}@127.0.0.1:5431/agros_gars_uat
+              run: echo "GARS_DATABASE_URL=$Gars_Url" >> $GITHUB_ENV
+
+            # Set PROD Environment
+            - name: Set PROD DB url
+              if: ${{ github.event.inputs.environment == 'prod' }}
+              env:
+                  Db_Url: postgres://admin:${{ secrets.DB_PASSWORD }}@127.0.0.1:5432/agros_db_prod?schema=main
+              run: echo "DATABASE_URL=$Db_Url" >> $GITHUB_ENV
+
+            - name: Set PROD GARS DB url
+              if: ${{ github.event.inputs.environment == 'prod' }}
+              env:
+                  Gars_Url: postgres://postgres:${{ secrets.DB_GARS_PASSWORD }}@127.0.0.1:5431/agros_gars_prod
+              run: echo "GARS_DATABASE_URL=$Gars_Url" >> $GITHUB_ENV
+
+            # Set database working directory as 'main'
+            - name: Set working directory as 'MAIN'
+              if: ${{ github.event.inputs.database == 'db-main' }}
+              env:
+                  Db_Main: ./databases/main
+              run: echo "WORKING_DIR=$Db_Main" >> $GITHUB_ENV
+
+            # Set database working directory as 'gars'
+            - name: Set working directory as 'GARS'
+              if: ${{ github.event.inputs.database == 'db-gars' }}
+              env:
+                  Db_Main: ./databases/clients/gars
+              run: echo "WORKING_DIR=$Db_Main" >> $GITHUB_ENV
+            # if: ${{ github.event.inputs.database == 'db-main' }}
+            # env:
+            #   WORKING_DIR: ./databases/main
+            # # Set database working directory as 'gars'
+            # if: ${{ github.event.inputs.database == 'db-gars' }}
+            # env:
+            #   WORKING_DIR: ./databases/clients/gars
 
             - name: "Read ENVs"
-              run: echo "Here are the ENVs ... DATABASE_URL = $DATABASE_URL, GARS_DATABASE_URL = $GARS_DATABASE_URL ... test"
+              run: echo "Here are the ENVs ... DATABASE_URL = $DATABASE_URL, GARS_DATABASE_URL = $GARS_DATABASE_URL, WORKING_DIR = $WORKING_DIR"
 # Can't share ENVs between jobs, because they run on different machines
 # read_envs_job:
 #     runs-on: ubuntu-latest
