@@ -1,0 +1,81 @@
+name: Migrate db (any) # Display name on github
+
+on:
+    workflow_dispatch:
+        # User chooses the following inputs
+        inputs:
+            environment:
+                required: true
+                type: choice
+                description: Which environment to run for
+                options:
+                    - dev
+                    - uat
+                    - prod
+            database:
+                required: true
+                type: choice
+                description: Which database to run on
+                options:
+                    - db-main
+                    - db-gars
+            rolled-back:
+                required: false
+                description: Rollback Migration
+                type: string
+            applied:
+                required: false
+                description: Applied Migration
+                type: string
+
+env:
+    # Cloud Variables
+    PROJECT_ID: agrosapi-213321 # Used in 'Setup GCP' step
+    REGION: us-central1 # Used in 'Connect to AWS'
+    DAY_OF_WEEK: Monday # ENV - available to ALL jobs
+
+jobs:
+    # What do we want to test?
+    # 1. Can we set universal ENVs? As in, can we have three steps that all use a conditional to check the first user input and then store global ENVs
+
+    # Q: How does this "if...else...fi" syntax work?
+    greeting_job:
+        runs-on: ubuntu-latest
+        env:
+            Greeting: Hello # ENV - available to all STEPS of THIS job
+        steps:
+            - name: "Say Hello Mona it's Monday"
+              run: echo "$Greeting $First_Name. Today is $DAY_OF_WEEK!"
+              env:
+                  First_Name: Mona # ENV - available to THIS step only
+
+
+    # setup-job:
+    #     runs-on: ubuntu-latest
+    #     outputs:
+    #         var1: ${{ steps.set-variable.outputs.test }}
+    #     steps:
+    #         - uses: actions/checkout@v3
+    #         - name: Set test variable
+    #           id: set-variable
+    #           run: |
+    #               if [ ${{ github.ref }} != 'refs/heads/main' ]; then
+    #                 echo "IS NOT main branch"
+    #                 echo "::set-output name=test::abc"
+    #               else
+    #                 echo "IS main branch"
+    #                 echo "::set-output name=test::123"
+    #               fi
+    #           shell: bash
+    #         - name: Read exported variable
+    #           run: |
+    #               echo "OUTPUT: ${{ steps.check.test-env.test }}"
+
+    # subsequent-job:
+    #     runs-on: ubuntu-latest
+    #     needs: [setup-job]
+    #     steps:
+    #         - uses: actions/checkout@v2
+    #         - name: Read exported variable
+    #           run: |
+    #               echo "OUTPUT: ${{needs.setup-job.outputs.var1}}"
