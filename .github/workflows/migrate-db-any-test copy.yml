@@ -42,17 +42,21 @@ jobs:
     greeting_job:
         runs-on: ubuntu-latest
         env:
-            Greeting: Hello # ENV - available to all STEPS of THIS job
+            # Greeting: Hello # ENV - available to all STEPS of THIS job
         steps:
-            # - name: "Change ENV DAY_OF_WEEK"
-            # run: ${{ env.DAY_OF_WEEK: "Tuesday" }}
-            # run: echo "{DAY_OF_WEEK}={Tuesday}" >> $GITHUB_ENV
-            - name: "Change 2"
+            - name: "Change Global ENV"
               run: echo "DAY_OF_WEEK=Wednesday" >> $GITHUB_ENV
+            - name: "Set Global ENV"
+              run: echo "GREETING=Whazzaaaap" >> $GITHUB_ENV
+
+      double_check:
+        needs: [greeting_job]
+        steps:
             - name: "Say Hello Mona it's Monday"
-              run: echo "$Greeting $First_Name. Today is $DAY_OF_WEEK!"
+              run: echo "$GREETING $First_Name. Today is $DAY_OF_WEEK!"
               env:
                   First_Name: Mona # ENV - available to THIS step only
+
 
 
     # Returns 'Hello Mona. Today is Monday!'
