@@ -47,6 +47,8 @@ jobs:
             - name: "Change ENV DAY_OF_WEEK"
               # run: ${{ env.DAY_OF_WEEK: "Tuesday" }}
               run: echo "{DAY_OF_WEEK}={Tuesday}" >> $GITHUB_ENV
+            - name: "Change 2"
+              run: echo "DAY_OF_WEEK=Tuesday" >> $GITHUB_ENV
             - name: "Say Hello Mona it's Monday"
               run: echo "$Greeting $First_Name. Today is $DAY_OF_WEEK!"
               env:
