@@ -39,7 +39,7 @@ jobs:
         name: Set ENVs for 'migrate' job
         runs-on:
             ubuntu-latest
-        echo "GREETING=Whazzaaaap" >> $GITHUB_ENV
+        # echo "GREETING=Whazzaaaap" >> $GITHUB_ENV
         steps:
         - name: Set DEV & GARS DB urls
             if: ${{ github.event.inputs.environment == 'dev' }}
