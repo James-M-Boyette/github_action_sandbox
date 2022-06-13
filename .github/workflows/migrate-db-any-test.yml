@@ -43,7 +43,7 @@ jobs:
             - name: Set DEV & GARS DB urls
               if: ${{ github.event.inputs.environment == 'dev' }}
               env:
-                  Db_Url: ${{postgres://admin:${{ secrets.DB_PASSWORD }}@127.0.0.1:5432/agros_db_dev?schema=main}}
+                  Db_Url: "postgres://admin:${{ secrets.DB_PASSWORD }}@127.0.0.1:5432/agros_db_dev?schema=main"
               run:
                   echo "DATABASE_URL=$Db_Url" >> $GITHUB_ENV
                   #   echo "GARS_DATABASE_URL=postgres://postgres:${{ secrets.DB_GARS_PASSWORD }}@127.0.0.1:5431/agros_gars_dev" >> $GITHUB_ENV
