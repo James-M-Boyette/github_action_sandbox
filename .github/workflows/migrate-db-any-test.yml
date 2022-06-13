@@ -45,8 +45,10 @@ jobs:
               env:
                   db_url: postgres://admin:${{ secrets.DB_PASSWORD }}@127.0.0.1:5432/agros_db_dev?schema=main
               run:
-                  echo "DATABASE_URL=db_url" >> $GITHUB_ENV
+                  echo "DATABASE_URL=test" >> $GITHUB_ENV
                   #   echo "GARS_DATABASE_URL=postgres://postgres:${{ secrets.DB_GARS_PASSWORD }}@127.0.0.1:5431/agros_gars_dev" >> $GITHUB_ENV
+            - name: "Read ENVs"
+              run: echo "DATABASE_URL = $DATABASE_URL, GARS_DATABASE_URL = $GARS_DATABASE_URL"
 
     read_envs_job:
         runs-on: ubuntu-latest
