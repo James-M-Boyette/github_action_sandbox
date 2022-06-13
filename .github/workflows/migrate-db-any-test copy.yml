@@ -46,8 +46,10 @@ jobs:
         steps:
             - name: "Change Global ENV"
               run: echo "DAY_OF_WEEK=Wednesday" >> $GITHUB_ENV
-            # - name: "Set Global ENV"
-            #   run: echo "GREETING=Whazzaaaap" >> $GITHUB_ENV
+            - name: "Set Global ENV"
+              run: echo "GREETING=Whazzaaaap" >> $GITHUB_ENV
+            - name: "Read ENVs"
+              run: echo "DAY_OF_WEEK = $DAY_OF_WEEK"
 
     # double_check:
     # needs: greeting_job
