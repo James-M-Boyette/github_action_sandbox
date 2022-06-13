@@ -49,16 +49,14 @@ jobs:
             # - name: "Set Global ENV"
             #   run: echo "GREETING=Whazzaaaap" >> $GITHUB_ENV
 
-      double_check:
-        needs: greeting_job
-        runs-on: ubuntu-latest
-        steps:
-            - name: "Say Hello Mona it's Wednesday"
-              run: echo "$GREETING $First_Name. Today is $DAY_OF_WEEK!"
-              env:
-                  First_Name: Mona # ENV - available to THIS step only
-
-
+    # double_check:
+    # needs: greeting_job
+    # runs-on: ubuntu-latest
+    # steps:
+    #     - name: "Say Hello Mona it's Wednesday"
+    #       run: echo "$GREETING $First_Name. Today is $DAY_OF_WEEK!"
+    #       env:
+    #           First_Name: Mona # ENV - available to THIS step only
 
     # Returns 'Hello Mona. Today is Monday!'
 
