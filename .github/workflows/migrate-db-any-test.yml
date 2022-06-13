@@ -45,57 +45,57 @@ jobs:
               env:
                   db_url: postgres://admin:${{ secrets.DB_PASSWORD }}@127.0.0.1:5432/agros_db_dev?schema=main
               run:
-                  echo "DATABASE_URL=test" >> $GITHUB_ENV
+                  echo "DATABASE_URL=db_url" >> $GITHUB_ENV
                   #   echo "GARS_DATABASE_URL=postgres://postgres:${{ secrets.DB_GARS_PASSWORD }}@127.0.0.1:5431/agros_gars_dev" >> $GITHUB_ENV
             - name: "Read ENVs"
               run: echo "DATABASE_URL = $DATABASE_URL, GARS_DATABASE_URL = $GARS_DATABASE_URL"
+# Can't share ENVs between jobs, because they run on different machines
+# read_envs_job:
+#     runs-on: ubuntu-latest
+#     needs: set_dev_envs_job
+#     # env:
+#     # Greeting: Hello # ENV - available to all STEPS of THIS job
+#     steps:
+#         - name: "Read ENVs"
+#           run: echo "DATABASE_URL = $DATABASE_URL, GARS_DATABASE_URL = $GARS_DATABASE_URL"
 
-    read_envs_job:
-        runs-on: ubuntu-latest
-        needs: set_dev_envs_job
-        # env:
-        # Greeting: Hello # ENV - available to all STEPS of THIS job
-        steps:
-            - name: "Read ENVs"
-              run: echo "DATABASE_URL = $DATABASE_URL, GARS_DATABASE_URL = $GARS_DATABASE_URL"
+# double_check:
+# needs: greeting_job
+# runs-on: ubuntu-latest
+# steps:
+#     - name: "Say Hello Mona it's Wednesday"
+#       run: echo "$GREETING $First_Name. Today is $DAY_OF_WEEK!"
+#       env:
+#           First_Name: Mona # ENV - available to THIS step only
 
-    # double_check:
-    # needs: greeting_job
-    # runs-on: ubuntu-latest
-    # steps:
-    #     - name: "Say Hello Mona it's Wednesday"
-    #       run: echo "$GREETING $First_Name. Today is $DAY_OF_WEEK!"
-    #       env:
-    #           First_Name: Mona # ENV - available to THIS step only
+# Returns 'Hello Mona. Today is Monday!'
 
-    # Returns 'Hello Mona. Today is Monday!'
+# setup-job:
+#     runs-on: ubuntu-latest
+#     outputs:
+#         var1: ${{ steps.set-variable.outputs.test }}
+#     steps:
+#         - uses: actions/checkout@v3
+#         - name: Set test variable
+#           id: set-variable
+#           run: |
+#               if [ ${{ github.ref }} != 'refs/heads/main' ]; then
+#                 echo "IS NOT main branch"
+#                 echo "::set-output name=test::abc"
+#               else
+#                 echo "IS main branch"
+#                 echo "::set-output name=test::123"
+#               fi
+#           shell: bash
+#         - name: Read exported variable
+#           run: |
+#               echo "OUTPUT: ${{ steps.check.test-env.test }}"
 
-    # setup-job:
-    #     runs-on: ubuntu-latest
-    #     outputs:
-    #         var1: ${{ steps.set-variable.outputs.test }}
-    #     steps:
-    #         - uses: actions/checkout@v3
-    #         - name: Set test variable
-    #           id: set-variable
-    #           run: |
-    #               if [ ${{ github.ref }} != 'refs/heads/main' ]; then
-    #                 echo "IS NOT main branch"
-    #                 echo "::set-output name=test::abc"
-    #               else
-    #                 echo "IS main branch"
-    #                 echo "::set-output name=test::123"
-    #               fi
-    #           shell: bash
-    #         - name: Read exported variable
-    #           run: |
-    #               echo "OUTPUT: ${{ steps.check.test-env.test }}"
-
-    # subsequent-job:
-    #     runs-on: ubuntu-latest
-    #     needs: [setup-job]
-    #     steps:
-    #         - uses: actions/checkout@v2
-    #         - name: Read exported variable
-    #           run: |
-    #               echo "OUTPUT: ${{needs.setup-job.outputs.var1}}"
+# subsequent-job:
+#     runs-on: ubuntu-latest
+#     needs: [setup-job]
+#     steps:
+#         - uses: actions/checkout@v2
+#         - name: Read exported variable
+#           run: |
+#               echo "OUTPUT: ${{needs.setup-job.outputs.var1}}"
